@@ -18,31 +18,20 @@
 */
 
 // Required module list. Remove unnecessary modules, you can always get them back from the boilerplate.
-define([
+require([
     "dojo/_base/declare",
     "mxui/widget/_WidgetBase",
 
-    "mxui/dom",
-    "dojo/dom",
-    "dojo/dom-prop",
-    "dojo/dom-geometry",
     "dojo/dom-class",
-    "dojo/dom-style",
-    "dojo/dom-construct",
-    "dojo/_base/array",
-    "dojo/_base/lang",
-    "dojo/text",
-    "dojo/html",
-    "dojo/_base/event",
 
     "ScrollToAnchor/lib/jquery-1.11.2"
-], function(declare, _WidgetBase, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent, _jQuery) {
+], function(declare, _WidgetBase, dojoClass, _jQuery) {
     "use strict";
 
     var $ = _jQuery.noConflict(true);
 
     // Declare widget's prototype.
-    return declare("ScrollToAnchor.widget.Anchor", [ _WidgetBase], {
+    var widget = {
 
         // _TemplatedMixin will create our dom node using this HTML template.
 
@@ -67,26 +56,25 @@ define([
 
             callback();
         },
-
      
         // Attach events to HTML dom elements
         _setupEvents: function () {
 
         },
 
+        evaluateAnchorName: function(anchorName) {
+            if( anchorName == null )
+                return "";
+            
+            return anchorName.replace(/[^\w\s]/gi, '');
+        },
+        
         // Rerender the interface.
         _updateRendering: function () {
-            
-            dojoClass.add(this.domNode, this.anchorClass);
-            //var anchorDiv = mxui.dom.div({
-               //"class": this.anchorClass
-            //});	
-            
-           //domConstruct.place(anchorDiv, this.domNode, "first");
-            
+            dojoClass.add(this.domNode, this.evaluateAnchorName(this.anchorClass));
         }
-    });
-});
-require(['ScrollToAnchor/widget/Anchor'], function () {
-    'use strict';
+    };
+    
+    declare("ScrollToAnchor.widget.Anchor", [ _WidgetBase, _jQuery], widget);
+    declare("ScrollToAnchor.widget.AnchorWithContext", [ _WidgetBase, _jQuery], widget);
 });

@@ -91,10 +91,19 @@ define([
 
         },
 
+        evaluateAnchorName: function(anchorName) {
+            if( anchorName == null )
+                return "";
+            
+            return anchorName.replace(/[^\w\s]/gi, '');
+        },
+        
         // Rerender the interface.
         _updateRendering: function () {
             if (this._contextObj !== null) {
                 var _scrollTo = this._contextObj.get(this.scrollTo);
+                _scrollTo = this.evaluateAnchorName( _scrollTo );
+                
                 var self = this;
                 if (_scrollTo != ""){
                     if ($('.'+_scrollTo)[0]){

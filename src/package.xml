@@ -5,6 +5,7 @@
 			<widgetFile path="ScrollToAnchor/ScrollToAnchor.xml"/>
 			<widgetFile path="ScrollToAnchor/ScrollToAnchorWithoutContext.xml"/>
             <widgetFile path="ScrollToAnchor/Anchor.xml"/>
+            <widgetFile path="ScrollToAnchor/AnchorWithContext.xml"/>
 		</widgetFiles>
 		<files>
 			<file path="ScrollToAnchor/widget/"/>
