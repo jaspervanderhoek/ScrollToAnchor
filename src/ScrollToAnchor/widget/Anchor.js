@@ -37,6 +37,7 @@ require([
 
         // Parameters configured in the Modeler.
         anchorClass: "",
+        classAssigned: false,
 
         // dojo.declare.constructor is called to construct the widget instance. Implement to initialize non-primitive properties.
         constructor: function () {
@@ -53,7 +54,10 @@ require([
         // mxui.widget._WidgetBase.update is called when context is changed or initialized. Implement to re-render and / or fetch data.
         update: function (obj, callback) {
             console.log(this.id + '.update');
-
+            this._contextObj = obj;
+            
+            this._updateRendering();
+            
             callback();
         },
      
@@ -66,12 +70,29 @@ require([
             if( anchorName == null )
                 return "";
             
-            return anchorName.replace(/[^\w\s]/gi, '');
+            return anchorName.replace(/[^\w]/gi, '');
         },
         
         // Rerender the interface.
         _updateRendering: function () {
-            dojoClass.add(this.domNode, this.evaluateAnchorName(this.anchorClass));
+            if( this._contextObj != null ) {
+                var currentClass = this.anchorClass;
+                
+                if( this.anchorClassAttr != null ) 
+                    this.anchorClass = this._contextObj.get(this.anchorClassAttr);
+                
+                if( this.classAssigned == true ) {
+                    dojoClass.remove( this.domNode, currentClass );
+                }
+            }
+            this.anchorClass = this.evaluateAnchorName(this.anchorClass)
+            
+            if( this.anchorClass != null && this.anchorClass != "" ) {
+                dojoClass.add(this.domNode, this.anchorClass);
+                this.classAssigned = true;
+            }
+            else 
+                this.classAssigned = false;
         }
     };
     
